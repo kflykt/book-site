@@ -1,13 +1,12 @@
 import { Router } from 'express';
-import bookRouter from './books';
+import bookRouter from './bookController';
 
-const routes = Router()
+const router = Router()
 
-routes.use('/', (request, response) => {
-    response.send('this is default route');
+router.route('/').get((request, response) => {
+    response.send('this is default  test');
 })
 
-routes.use('/books', bookRouter);
+router.use('/books', bookRouter);
 
-
-export default routes;
+export default router;
