@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import { openDb } from "./database/database";
 
@@ -8,6 +9,7 @@ const app = express();
 
 migrateDatabase();
 
+app.use(cors());
 app.use(express.json());
 app.use(router);
 

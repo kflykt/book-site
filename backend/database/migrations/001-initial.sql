@@ -6,7 +6,8 @@
 CREATE TABLE Books (
     book_id INTEGER PRIMARY KEY,
     title TEXT NOT NULL,
-    author TEXT NOT NULL
+    author TEXT NOT NULL,
+    description TEXT NOT NULL DEFAULT ''
 );
 
 INSERT INTO Books (title, author)

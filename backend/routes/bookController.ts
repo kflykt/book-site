@@ -8,7 +8,6 @@ import { getBooks } from '../database/repos/bookrepo';
 
  bookRouter.route("/").get((request, response) => {
    getBooks().then((bookList) => {
-    console.log(bookList, 12);
     response.send(JSON.stringify(bookList));
    });
    
