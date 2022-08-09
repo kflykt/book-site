@@ -1,6 +1,6 @@
 
 import { Router, Request, Response } from 'express';
-import { insertBookData, updateBookData } from '../core/book';
+import { deleteBookData, insertBookData, updateBookData } from '../core/book';
 import { getBooks } from '../database/repos/bookrepo';
 import { validateBook } from './bookValidator';
 
@@ -14,12 +14,16 @@ import { validateBook } from './bookValidator';
     });
   })
 
-  bookRouter.route("/:bookId").post(validateBook, (request: Request, response: Response) => {
+  bookRouter.route("/:bookId").post(validateBook, (request: Request<{bookId: number}>, response: Response) => {
     updateBookData(request, response)
   });
 
   bookRouter.route("/").post(validateBook, (request: Request, response: Response) => {
     insertBookData(request, response)
+  });
+
+  bookRouter.route("/:bookId").delete((request: Request<{bookId: number}>, response: Response) => {
+    deleteBookData(request.params.bookId, response)
   });
 
  export default bookRouter;

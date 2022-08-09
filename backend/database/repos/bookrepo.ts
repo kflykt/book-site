@@ -26,3 +26,10 @@ export const insertBook = async (book: Book) => {
     await db.run(query, [book.title, book.author, book.description]);
     db.close();
 }
+
+export const deleteBook = async (bookId: number) => {
+    const db = await openDb();
+    const query = `DELETE FROM BOOKS WHERE bookId = ?`; 
+    await db.run(query, [bookId]);
+    db.close();
+}
