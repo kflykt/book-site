@@ -4,11 +4,13 @@
 --------------------------------------------------------------------------------
 
 CREATE TABLE Books (
-    book_id INTEGER PRIMARY KEY,
+    bookId INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     author TEXT NOT NULL,
     description TEXT NOT NULL DEFAULT ''
 );
+
+CREATE UNIQUE INDEX uixd_title_author ON Books (title, author);
 
 INSERT INTO Books (title, author)
 VALUES ('Luova värityskirjani', 'Nelli Orell');
@@ -30,6 +32,7 @@ VALUES ('Orkideatarha', 'Lucinda Riley');
 
 INSERT INTO Books (title, author)
 VALUES ('Hyvä historia', 'Rutger Bregman');
+
 
 --------------------------------------------------------------------------------
 -- Down
