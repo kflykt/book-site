@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 import { insertBook, updateBook } from '../database/repos/bookrepo';
 
-export type BookModel = {
+export type BookWithId = {
     bookId: number
     title: string,
     author: string,
     description: string,
 }
 
-export type InsertBookModel = {
+export type Book = {
     title: string,
     author: string,
     description: string,

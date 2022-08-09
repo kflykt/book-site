@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Book } from "../../backend/database/repos/bookrepo";
+import { BookWithId } from "../../backend/core/book";
 import { EditBook } from "./editBook";
-import { getBooks } from "./getBooks";
+import { getBooks } from "./BooksQuery";
 
 export const BookList = () => {
 
     const { data } = useQuery(['books'], getBooks);
-    const [selectedBook, setSelectedBook] = useState<Book | undefined>(undefined)
+    const [selectedBook, setSelectedBook] = useState<BookWithId | undefined>(undefined)
 
     const bookList = data !== undefined ? data : [];
 
@@ -23,8 +23,7 @@ export const BookList = () => {
                 )
                 }
             </>
-        );
-        
+        );   
     }
 
     return (
