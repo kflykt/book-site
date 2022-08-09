@@ -1,7 +1,7 @@
 import express from "express";
 import routes from "./routes/routes";
 
-const port = 5000;
+const port = 8000;
 const app = express();
 
 app.use(express.json());
