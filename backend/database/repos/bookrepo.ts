@@ -1,6 +1,5 @@
 import { openDb } from "../database";
-
-interface Book {
+export type Book = {
     title: string,
     author: string
 }
