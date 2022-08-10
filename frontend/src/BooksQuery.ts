@@ -32,6 +32,14 @@ export const addBook = (book: Book) => {
 
     return axios.post(urlPrefix + "/books", {
         headers: headers,    
-        ...book
+        data: book
+    })
+}
+
+export const deleteBook = (bookId: number) => {
+    headers['content-type'] = 'application/x-www-form-urlencoded';
+
+    return axios.delete(urlPrefix + "/books/" + bookId, {
+        headers: headers
     })
 }

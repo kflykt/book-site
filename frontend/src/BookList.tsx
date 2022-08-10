@@ -3,22 +3,30 @@ import { useState } from "react";
 import { BookWithId } from "../../backend/core/book";
 import { EditBook } from "./editBook";
 import { getBooks } from "./BooksQuery";
+import { AxiosError } from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 export const BookList = () => {
 
-    const { data } = useQuery(['books'], getBooks);
+    const { data, error } = useQuery<BookWithId[], AxiosError>(['books'], getBooks);
+    
+
     const [selectedBook, setSelectedBook] = useState<BookWithId | undefined>(undefined)
 
     const bookList = data !== undefined ? data : [];
+
+    if (error){
+        toast.error(error.message);
+    }
 
 
     const bookElementList = () => {
         return (
             <>
                 { bookList.map((book, index) =>
-                    <tr onClick={ () => setSelectedBook(book) } key={index}>
-                        <td>{book.title}</td>
-                        <td>{book.author}</td>
+                    <tr key={index}>
+                        <td onClick={ () => setSelectedBook(book) }>{book.title}</td>
+                        <td onClick={ () => setSelectedBook(book) }>{book.author}</td>
                     </tr>
                 )
                 }
@@ -40,6 +48,7 @@ export const BookList = () => {
                 </tbody>
             </table>
             <EditBook book={selectedBook}/>
+            <Toaster   position="top-center" reverseOrder={false} />
         </>
     )
 }

@@ -1,8 +1,6 @@
 import { BookWithId, Book } from "../../core/book";
 import { openDb } from "../database";
 
-
-
 export const getBooks = async () => {
     const db = await openDb();
     const query = "SELECT bookId, title, author, description from Books"; 
