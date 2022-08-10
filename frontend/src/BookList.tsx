@@ -5,6 +5,7 @@ import { EditBook } from "./editBook";
 import { getBooks } from "./BooksQuery";
 import { AxiosError } from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import styled from "styled-components";
 
 export const BookList = () => {
 
@@ -25,8 +26,8 @@ export const BookList = () => {
             <>
                 { bookList.map((book, index) =>
                     <tr key={index}>
-                        <td onClick={ () => setSelectedBook(book) }>{book.title}</td>
-                        <td onClick={ () => setSelectedBook(book) }>{book.author}</td>
+                        <StyledTableCell onClick={ () => setSelectedBook(book) }>{book.title}</StyledTableCell>
+                        <StyledTableCell onClick={ () => setSelectedBook(book) }>{book.author}</StyledTableCell>
                     </tr>
                 )
                 }
@@ -36,22 +37,56 @@ export const BookList = () => {
 
     return (
         <>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Authors</th>
-                    </tr>
-                </thead>
+            <CenteredTable>
+                <StyledHeader>
+                    <StyledHeaderRow>
+                        <StyledTableHeaderCell>Title</StyledTableHeaderCell>
+                        <StyledTableHeaderCell>Authors</StyledTableHeaderCell>
+                    </StyledHeaderRow>
+                </StyledHeader>
                 <tbody>
                     {bookElementList()}
                 </tbody>
-            </table>
+            </CenteredTable>
             <EditBook book={selectedBook}/>
             <Toaster   position="top-center" reverseOrder={false} />
         </>
     )
 }
+
+
+const CenteredTable = styled.table`
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+`;
+
+const StyledHeader = styled.thead`
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+`;
+
+const StyledHeaderRow = styled.tr`
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+`;
+
+const StyledTableHeaderCell = styled.th`
+    padding: 10px;
+    border: 1px solid black;
+`;
+
+const StyledTableCell = styled.td`
+    padding: 10px;
+    border: 1px solid black;
+`;
+
 
 
 

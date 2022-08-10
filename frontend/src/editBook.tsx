@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import React, { FC, useEffect, useState } from "react"
 import toast from "react-hot-toast";
+import styled from "styled-components";
 import { Book, BookWithId } from "../../backend/core/book";
 import { updateBook, addBook, deleteBook } from "./BooksQuery";
 
@@ -109,14 +110,96 @@ export const EditBook: FC<EditBookProps> = ({ book }): JSX.Element => {
     }
 
     return (
-        <>
-            <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)}></input>
-            <input value={editAuthor} onChange={(e) => setEditAuthor(e.target.value)}></input>
-            <textarea value={editDescription} onChange={(e) => setEditDescription(e.target.value)}></textarea>
-            <button onClick={handleSaveNew} disabled={isDisabled(true)}>Save new</button>
-            <button onClick={handleSave} disabled={isDisabled(false)}>Save</button>
-            <button onClick={handleClear}>clear</button>
-            <button onClick={handleDelete}disabled={isDisabled(false)}>Delete</button>
-        </>
+        <EditContainer>
+            <InputContainer>
+                <StyledInputHeader>Title</StyledInputHeader>
+                <StyledInput value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
+                <StyledInputHeader>Author</StyledInputHeader>
+                <StyledInput value={editAuthor} onChange={(e) => setEditAuthor(e.target.value)} />
+                <StyledInputHeader>Description</StyledInputHeader>
+                <StyledTextArea value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
+            </InputContainer>
+            <ButtonContainer>
+                <SuccessButton onClick={handleSaveNew} disabled={isDisabled(true)}>Save new</SuccessButton>
+                <SuccessButton onClick={handleSave} disabled={isDisabled(false)}>Save</SuccessButton>
+                <ClearButton onClick={handleClear}>Clear</ClearButton>
+                <DeleteButton onClick={handleDelete} disabled={isDisabled(false)}>Delete</DeleteButton>
+            </ButtonContainer>
+        </EditContainer>
     )
 }
+
+const minInputWithd = '300px';
+
+const StyledInputHeader = styled.h3`
+    margin: 15px 15px 0px 15px;
+    display: flex;
+    align-self: center;
+`;
+
+// Input Styles
+const InputContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+`;
+
+const StyledInput = styled.input`
+    margin: 0px 15px 15px 15px;
+    padding: 5px;
+    display: flex;
+    min-width: ${minInputWithd};
+    align-self: center;
+`;
+
+const StyledTextArea = styled.textarea`
+    display: flex;
+    margin: 0px 15px 15px 15px;
+    min-width: ${minInputWithd};
+    align-self: center;
+`;
+
+
+// Button styles
+
+const ButtonContainer = styled.div`
+    display: flex;
+    align-self: center;
+    align-content: space-between;
+
+`;
+
+
+const StyledButton = styled.button`
+    margin: 15px;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    display: flex;
+    flext-wrap: wrap;
+
+    &:disabled {
+        opacity: 0.6;
+    }
+`;
+
+const SuccessButton = styled(StyledButton)`
+    background-color: #4CAF50;
+`;
+
+const DeleteButton = styled(StyledButton)`
+    background-color: #f44336;
+`;
+
+const ClearButton = styled(StyledButton)`
+    background-color: #e7e7e7;
+    color: black;
+`;
+
+const EditContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
