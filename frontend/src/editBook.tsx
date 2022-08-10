@@ -3,8 +3,8 @@ import { AxiosError } from "axios";
 import React, { FC, useEffect, useState } from "react"
 import toast from "react-hot-toast";
 import styled from "styled-components";
-import { Book, BookWithId } from "../../backend/core/book";
 import { updateBook, addBook, deleteBook } from "./BooksQuery";
+import { Book, BookWithId } from "./types/book";
 
 type EditBookProps = {
     book: BookWithId | undefined

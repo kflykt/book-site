@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { BookWithId } from "../../backend/core/book";
 import { EditBook } from "./editBook";
 import { getBooks } from "./BooksQuery";
 import { AxiosError } from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import styled from "styled-components";
+import { BookWithId } from "./types/book";
 
 export const BookList = () => {
 

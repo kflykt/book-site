@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Book, BookWithId } from "../../backend/core/book";
+import { Book, BookWithId } from "./types/book";
 
 const urlPrefix = 'http://localhost:8000'
 
