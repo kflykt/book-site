@@ -4,8 +4,8 @@ import { open } from "sqlite";
 
 export const openDb = () => {
 
-    const database = "./database/" + 'BookDB.sqlite';
 
+    const database = `${__dirname}/BookDB.sqlite`;
     return open({
         filename: database,
         driver: Database

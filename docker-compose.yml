@@ -1,0 +1,20 @@
+version: '3'
+services:
+  backend_dev:
+    build:
+      context: ./backend/
+    command: npm run start
+    ports:
+      - "8000:8000"
+    volumes:
+      - book-db:/usr/src/app/database
+  frontend_dev:
+    build:
+      context: ./frontend/
+    command: npm start
+    depends_on:
+      - backend_dev
+    ports:
+      - "3000:3000"
+volumes:
+  book-db:
