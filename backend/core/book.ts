@@ -17,6 +17,7 @@ export type Book = {
 export const updateBookData = async (request: Request<{bookId: number}>, response: Response) => {
     
     const data = request.body.data;
+    const errorList: string[] = [];
 
     // also floats go trough but good enough here
     if (isNaN(request.params.bookId)) {
@@ -25,13 +26,16 @@ export const updateBookData = async (request: Request<{bookId: number}>, respons
     } 
 
     if (data.title === undefined || data.title === ''){
-        return response.status(422).send(`title can't be empty`);
+        errorList.push("title");
     }
 
     if (data.author === undefined || data.author === ''){
-        return response.status(422).send(`author can't be empty`);
+        errorList.push("author");
     }
-
+    
+    if (errorList.length > 0){
+        return response.status(422).send(`Fields can't be empty: ${errorList.toString()}`);
+    }
 
     // TODO: should check if duplicate constrain and give detailed info to user
     const book = {
@@ -51,12 +55,18 @@ export const updateBookData = async (request: Request<{bookId: number}>, respons
 
 export const insertBookData = async (request:Request, response: Response) => {
     const data = request.body.data;
+    
+    const errorList: string[] = [];
     if (data.title === undefined || data.title === ''){
-        return response.status(422).send(`title can't be empty`);
+        errorList.push("title");
     }
 
     if (data.author === undefined || data.author === ''){
-        return response.status(422).send(`author can't be empty`);
+        errorList.push("author");
+    }
+
+    if (errorList.length > 0){
+        return response.status(422).send(`Fields can't be empty: ${errorList.toString()}`);
     }
 
     // TODO: should check if duplicate constrain and give detailed info to user

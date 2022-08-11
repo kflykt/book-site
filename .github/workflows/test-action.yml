@@ -1,7 +1,17 @@
 name: Test github actions
 on: [push]
 jobs:
-  Print-Stuff:
+  Run-backend-tests:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
     steps:
-      - run: echo "this is action"
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: cd backend && npm test

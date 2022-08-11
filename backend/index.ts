@@ -20,7 +20,7 @@ app.listen(port, () => {
     console.log('App is running');
 })
 
-
+export default app;
 
 async function migrateDatabase() {
     const db = await openDb();
