@@ -1,11 +1,11 @@
 import request from 'supertest'
-import app from '../'
+import app from '../app';
 import { BookWithId } from '../core/book';
 import { openDb } from '../database/database';
 
 describe("Post /books/:bookId", () => {
 
-    it("No form data. Should return 422 with message", async () => {
+    test("No form data. Should return 422 with message", async () => {
         const response = await request(app)
             .post("/books/5")
             .send({data: {title: '', author: '', description: ''}});
@@ -14,7 +14,7 @@ describe("Post /books/:bookId", () => {
         expect(response.text).toBe(`Fields can't be empty: title,author`)
     })
 
-    it("No title given. Should return 422 with message", async () => {
+    test("No title given. Should return 422 with message", async () => {
         const response = await request(app)
             .post("/books/5")
             .send({data: {title: '', author: 'test', description: ''}});
@@ -22,7 +22,7 @@ describe("Post /books/:bookId", () => {
         expect(response.statusCode).toBe(422);
     })
 
-    it("No author given. Should return 422 with message", async () => {
+    test("No author given. Should return 422 with message", async () => {
         const response = await request(app)
             .post("/books/5")
             .send({data: {title: 'some title', author: '', description: ''}});
@@ -30,7 +30,7 @@ describe("Post /books/:bookId", () => {
         expect(response.statusCode).toBe(422);
     })
 
-    it("Path param is not number. Should return 500 ", async () => {
+    test("Path param is not number. Should return 500 ", async () => {
         const response = await request(app)
             .post("/books/k")
             .send({data: {title: '', author: '', description: ''}});
@@ -38,7 +38,7 @@ describe("Post /books/:bookId", () => {
         expect(response.statusCode).toBe(500);
     })
 
-    it("Path param is missing. Should return 422 ", async () => {
+    test("Path param is missing. Should return 422 ", async () => {
         const response = await request(app)
             .post("/books/")
             .send({data: {title: '', author: '', description: ''}});
@@ -46,7 +46,7 @@ describe("Post /books/:bookId", () => {
         expect(response.statusCode).toBe(422);
     })
 
-    it("Duplicate value combination going to database. Should return 500 with message", async () => {
+    test("Duplicate value combination going to database. Should return 500 with message", async () => {
         await request(app)
             .post("/books/3")
             .send({data: {title: 'duplicate title', author: 'duplicate author', description: ''}});
@@ -59,7 +59,7 @@ describe("Post /books/:bookId", () => {
         
     })
 
-    it("Valid request. Should return 200", async () => {
+    test("Valid request. Should return 200", async () => {
         const response = await request(app)
             .post("/books/1")
             .send({data: {title: 'test title 2', author: 'test author', description: ''}});
@@ -76,7 +76,7 @@ describe("Post /books/:bookId", () => {
     })
 
 
-    it("Valid request without description field. Should return 200", async () => {
+    test("Valid request without description field. Should return 200", async () => {
         const response = await request(app)
             .post("/books/1")
             .send({data: {title: 'test title 2', author: 'test author 2'}});
@@ -87,7 +87,7 @@ describe("Post /books/:bookId", () => {
 })
 
 describe("GET /books", () => {
-    it("should return 200 and list", async () => {
+    test("should return 200 and list", async () => {
 
         const response = await request(app)
             .get("/books")
@@ -110,7 +110,7 @@ describe("POST /books", () => {
         expect(response.text).toBe(`Fields can't be empty: title,author`)
     })
 
-    it("Valid data given. Return 200", async () => {
+    test("Valid data given. Return 200", async () => {
 
         const response = await request(app)
             .post("/books")
@@ -134,7 +134,7 @@ describe("POST /books", () => {
 })
 
 describe("DELETE /books/:id", () => {
-    it("should return 200 and list", async () => {
+    test("should return 200 and list", async () => {
 
         const response = await request(app)
             .delete("/books/8")
