@@ -14,4 +14,5 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: cd backend && npm test
+      - run: ls 
+      - run: cd backend
