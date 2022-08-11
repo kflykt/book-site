@@ -1,4 +1,4 @@
-name: Test github actions
+name: Unit tests
 on: [push]
 jobs:
   Run-backend-tests:
@@ -16,9 +16,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
           cache-dependency-path: backend/package-lock.json
-      - run: | 
+      - name: npm install
+        run: | 
           cd backend
           npm install
-      - run: | 
+      - name: npm test
+        run: | 
           cd backend
           npm test
