@@ -14,8 +14,6 @@ export const EditBook: FC<EditBookProps> = ({ book }): JSX.Element => {
 
     const queryClient = useQueryClient();
 
-
-
     const deleteMutation = useMutation((bookId: number) => { return deleteBook(bookId) }, {
         onSuccess: () => {
             queryClient.invalidateQueries(['books'])
@@ -47,47 +45,31 @@ export const EditBook: FC<EditBookProps> = ({ book }): JSX.Element => {
         }
     })
    
-    const [editBookId, setEditBookId] = useState<number>(-1);
-    const [editTitle, setEditTitle] = useState<string>("");
-    const [editAuthor, setEditAuthor] = useState<string>("");
-    const [editDescription, setEditDescription] = useState<string>("");
+    const initialBook = book ?? {title: "", author: "", description: "", bookId: -1};
+    const [editBook, setEditBook] = useState<BookWithId>(initialBook);
+
 
     useEffect(() => {
-        setEditBookId(book?.bookId ?? -1);
-        setEditTitle(book?.title ?? "");
-        setEditAuthor(book?.author ?? "");
-        setEditDescription(book?.description ?? "");
+       setEditBook(book ?? {title: "", author: "", description: "", bookId: -1});
     }, [book])
     
     const handleSaveNew = () => {
-        const book: Book = {
-            title: editTitle,
-            author: editAuthor,
-            description: editDescription
-        }
-        addMutation.mutate(book);
+        addMutation.mutate(editBook);
+        handleClear();
     }
 
     const handleSave = () => {
-        const book: BookWithId = {
-            bookId: editBookId,
-            title: editTitle,
-            author: editAuthor,
-            description: editDescription
-        }
-        updateMutation.mutate(book);
+        updateMutation.mutate(editBook);
+        handleClear();
     }
 
     const handleClear = () => {
-        setEditBookId(-1);
-        setEditTitle("");
-        setEditAuthor("");
-        setEditDescription("");
+        setEditBook({title: "", author: "", description: "", bookId: -1});
     }
 
     const handleDelete = () => {
-        if(editBookId !== -1){
-            deleteMutation.mutate(editBookId);
+        if(editBook.bookId !== -1){
+            deleteMutation.mutate(editBook.bookId);
             handleClear();
         } else {
             toast.error("Can't delete book that doesn't exists in system");
@@ -95,29 +77,41 @@ export const EditBook: FC<EditBookProps> = ({ book }): JSX.Element => {
     }
 
     const isDisabled = (saveNew: boolean) => {
-        if(editTitle === "" || editAuthor === ""){
+        if(editBook.title === "" || editBook.author === ""){
             return true;
         }
 
-        if(!saveNew && editBookId > -1){
+        if(!saveNew && editBook.bookId > -1){
             return false;
         }
 
-        if(saveNew && editBookId === -1){
+        if(saveNew && editBook.bookId === -1){
             return false;
         }
         return true
+    }
+
+    const handleValueChange = (value: string, inputType: string) => {
+        if(inputType === 'title'){ 
+            setEditBook({title: value, author: editBook.author, description: editBook.description, bookId: editBook.bookId});
+        }
+        if(inputType === 'author'){ 
+            setEditBook({title: editBook.title, author: value, description: editBook.description, bookId: editBook.bookId});
+        }
+        if(inputType === 'description'){ 
+            setEditBook({title: editBook.title, author: editBook.author, description: value, bookId: editBook.bookId});
+        }
     }
 
     return (
         <EditContainer>
             <InputContainer>
                 <StyledInputHeader>Title</StyledInputHeader>
-                <StyledInput value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
+                <StyledInput value={editBook.title} onChange={(e) => handleValueChange(e.target.value, 'title')} />
                 <StyledInputHeader>Author</StyledInputHeader>
-                <StyledInput value={editAuthor} onChange={(e) => setEditAuthor(e.target.value)} />
+                <StyledInput value={editBook.author} onChange={(e) => handleValueChange(e.target.value, 'author')} />
                 <StyledInputHeader>Description</StyledInputHeader>
-                <StyledTextArea value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
+                <StyledTextArea value={editBook.description} onChange={(e) => handleValueChange(e.target.value, 'description')} />
             </InputContainer>
             <ButtonContainer>
                 <SuccessButton onClick={handleSaveNew} disabled={isDisabled(true)}>Save new</SuccessButton>
