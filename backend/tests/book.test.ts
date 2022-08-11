@@ -7,7 +7,7 @@ describe("Post /books/:bookId", () => {
 
     test("No form data. Should return 422 with message", async () => {
         const response = await request(app)
-            .post("/books/5")
+            .post("/books/1")
             .send({data: {title: '', author: '', description: ''}});
 
         expect(response.statusCode).toBe(422);
@@ -16,7 +16,7 @@ describe("Post /books/:bookId", () => {
 
     test("No title given. Should return 422 with message", async () => {
         const response = await request(app)
-            .post("/books/5")
+            .post("/books/1")
             .send({data: {title: '', author: 'test', description: ''}});
 
         expect(response.statusCode).toBe(422);
@@ -24,7 +24,7 @@ describe("Post /books/:bookId", () => {
 
     test("No author given. Should return 422 with message", async () => {
         const response = await request(app)
-            .post("/books/5")
+            .post("/books/1")
             .send({data: {title: 'some title', author: '', description: ''}});
 
         expect(response.statusCode).toBe(422);
@@ -47,27 +47,29 @@ describe("Post /books/:bookId", () => {
     })
 
     test("Duplicate value combination going to database. Should return 500 with message", async () => {
-        await request(app)
+        const response1 = await request(app)
+            .post("/books/2")
+            .send({data: {title: 'duplicate title', author: 'duplicate author', description: ''}});
+            
+        expect(response1.statusCode).toBe(200);
+
+        const response2 = await request(app)
             .post("/books/3")
             .send({data: {title: 'duplicate title', author: 'duplicate author', description: ''}});
-
-        const response = await request(app)
-            .post("/books/4")
-            .send({data: {title: 'duplicate title', author: 'duplicate author', description: ''}});
         
-        expect(response.statusCode).toBe(500);
+        expect(response2.statusCode).toBe(500);
         
     })
 
     test("Valid request. Should return 200", async () => {
         const response = await request(app)
-            .post("/books/1")
-            .send({data: {title: 'test title 2', author: 'test author', description: ''}});
+            .post("/books/4")
+            .send({data: {title: 'test title 4', author: 'test author 4', description: ''}});
         expect(response.statusCode).toBe(200);
 
         const db = await openDb();
         const query = "SELECT bookId, title, author, description from Books where title = ?";
-        const result = await db.all<BookWithId[]>(query, ["test title 2"])
+        const result = await db.all<BookWithId[]>(query, ["test title 4"])
         db.close();
 
         expect(result !== undefined).toBe(true);
@@ -78,8 +80,8 @@ describe("Post /books/:bookId", () => {
 
     test("Valid request without description field. Should return 200", async () => {
         const response = await request(app)
-            .post("/books/1")
-            .send({data: {title: 'test title 2', author: 'test author 2'}});
+            .post("/books/5")
+            .send({data: {title: 'test title 5', author: 'test author 5'}});
 
         expect(response.statusCode).toBe(200);
     })
