@@ -1,7 +1,7 @@
 # Book-site
 
 ## Usage
-run `docker-compose up` command at the root of this project. This will start up backend and frontend applications as well as create database.
+run `docker-compose up` command at the root of this project (at `localhost:3000`). This will start up backend and frontend applications as well as create database.
 Both projects run on compose like they would be runnin individually on local development. I didn't feel the need to create separate "production" like
 configuration because of I didn't want to use more time for this. Also in production frontend propably would come from cdn?
 
