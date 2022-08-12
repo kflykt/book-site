@@ -107,17 +107,17 @@ export const EditBook: FC<EditBookProps> = ({ book }): JSX.Element => {
         <EditContainer>
             <InputContainer>
                 <StyledInputHeader>Title</StyledInputHeader>
-                <StyledInput value={editBook.title} onChange={(e) => handleValueChange(e.target.value, 'title')} />
+                <StyledInput title="title" value={editBook.title} onChange={(e) => handleValueChange(e.target.value, 'title')} />
                 <StyledInputHeader>Author</StyledInputHeader>
-                <StyledInput value={editBook.author} onChange={(e) => handleValueChange(e.target.value, 'author')} />
+                <StyledInput title="author" value={editBook.author} onChange={(e) => handleValueChange(e.target.value, 'author')} />
                 <StyledInputHeader>Description</StyledInputHeader>
-                <StyledTextArea value={editBook.description} onChange={(e) => handleValueChange(e.target.value, 'description')} />
+                <StyledTextArea title="description" value={editBook.description} onChange={(e) => handleValueChange(e.target.value, 'description')} />
             </InputContainer>
             <ButtonContainer>
-                <SuccessButton onClick={handleSaveNew} disabled={isDisabled(true)}>Save new</SuccessButton>
-                <SuccessButton onClick={handleSave} disabled={isDisabled(false)}>Save</SuccessButton>
+                <SuccessButton title="savenew" onClick={handleSaveNew} disabled={isDisabled(true)}>Save new</SuccessButton>
+                <SuccessButton title="save" onClick={handleSave} disabled={isDisabled(false)}>Save</SuccessButton>
                 <ClearButton onClick={handleClear}>Clear</ClearButton>
-                <DeleteButton onClick={handleDelete} disabled={isDisabled(false)}>Delete</DeleteButton>
+                <DeleteButton title="delete" onClick={handleDelete} disabled={isDisabled(false)}>Delete</DeleteButton>
             </ButtonContainer>
         </EditContainer>
     )
