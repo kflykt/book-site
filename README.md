@@ -5,6 +5,8 @@ run `docker-compose up` command at the root of this project. This will start up 
 Both projects run on compose like they would be runnin individually on local development. I didn't feel the need to create separate "production" like
 configuration because of I didn't want to use more time for this. Also in production frontend propably would come from cdn?
 
+When you start application list of some books is presented. Also form of book information is at display. If you click book row it's values are presented in form fields and you can edit them. You can also add new books by filling empty fields and clicking save new button. Every time only usable buttons are enabled and ones that won't work are disabled. You can also delete selected book from system. Title and author have to be given every time you try to save data to system
+
 ## Development
 
 ### Backned
