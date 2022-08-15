@@ -12,9 +12,10 @@ export const BookList = () => {
     const { data, error } = useQuery<BookWithId[], AxiosError>(['books'], getBooks);
     
 
-    const [selectedBook, setSelectedBook] = useState<BookWithId | undefined>(undefined)
+    const [selectedBook, setSelectedBook] = useState<BookWithId>({title: "", author: "", description: "", bookId: -1})
 
     const bookList = data !== undefined ? data : [];
+
 
     if (error){
         toast.error(error.message);
@@ -48,7 +49,7 @@ export const BookList = () => {
                     {bookElementList()}
                 </tbody>
             </CenteredTable>
-            <EditBook book={selectedBook}/>
+            <EditBook book={selectedBook} setBook={setSelectedBook}/>
             <Toaster   position="top-center" reverseOrder={false} />
         </>
     )

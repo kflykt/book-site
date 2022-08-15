@@ -2,14 +2,16 @@ import { render, screen } from "@testing-library/react";
 import { BookWithId } from "./types/book";
 import { EditBook } from "./EditBook";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
 
 const queryClient = new QueryClient();
 
 it('Display book information at input fields, Save button is enabled and delete button is enabled', () => {
     const book: BookWithId = {title: "test title", author: "mock author", description: "some description", bookId: 1};
+    const setBook = () => {};    
     render(
         <QueryClientProvider client={queryClient}>
-            <EditBook book={book}/>)
+            <EditBook book={book} setBook={setBook}/>
         </QueryClientProvider>
     );
     const titleInput = screen.getByTitle('title');
@@ -35,9 +37,10 @@ it('Display book information at input fields, Save button is enabled and delete 
 
 it('Display new book information and save new is enabled', () => {
     const book: BookWithId = {title: "test title", author: "mock author", description: "some description", bookId: -1};
+    const setBook = () => {}; 
     render(
         <QueryClientProvider client={queryClient}>
-            <EditBook book={book}/>)
+            <EditBook book={book} setBook={setBook}/>
         </QueryClientProvider>
     );
     const titleInput = screen.getByTitle('title');
@@ -63,9 +66,10 @@ it('Display new book information and save new is enabled', () => {
 
 it('Only title given. All action buttons are disabled', () => {
     const book: BookWithId = {title: "test title", author: "", description: "", bookId: -1};
+    const setBook = () => {}; 
     render(
         <QueryClientProvider client={queryClient}>
-            <EditBook book={book}/>)
+            <EditBook book={book} setBook={setBook}/>
         </QueryClientProvider>
     );
     const titleInput = screen.getByTitle('title');
@@ -90,9 +94,10 @@ it('Only title given. All action buttons are disabled', () => {
 
 it('Only author given. All action buttons are disabled', () => {
     const book: BookWithId = {title: "", author: "new author", description: "", bookId: -1};
+    const setBook = () => {}; 
     render(
         <QueryClientProvider client={queryClient}>
-            <EditBook book={book}/>)
+            <EditBook book={book} setBook={setBook}/>
         </QueryClientProvider>
     );
     const titleInput = screen.getByTitle('title');

@@ -1,16 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import React, { FC, useEffect, useState } from "react"
+import React, { Dispatch, FC, SetStateAction } from "react"
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import { updateBook, addBook, deleteBook } from "./BooksQuery";
 import { Book, BookWithId } from "./types/book";
 
 type EditBookProps = {
-    book: BookWithId | undefined
+    book: BookWithId,
+    setBook: Dispatch<SetStateAction<BookWithId>>
 }
 
-export const EditBook: FC<EditBookProps> = ({ book }): JSX.Element => {
+export const EditBook: FC<EditBookProps> = ({ book, setBook }): JSX.Element => {
 
     const queryClient = useQueryClient();
 
@@ -45,31 +46,24 @@ export const EditBook: FC<EditBookProps> = ({ book }): JSX.Element => {
         }
     })
    
-    const initialBook = book ?? {title: "", author: "", description: "", bookId: -1};
-    const [editBook, setEditBook] = useState<BookWithId>(initialBook);
-
-
-    useEffect(() => {
-       setEditBook(book ?? {title: "", author: "", description: "", bookId: -1});
-    }, [book])
     
     const handleSaveNew = () => {
-        addMutation.mutate(editBook);
+        addMutation.mutate(book);
         handleClear();
     }
 
     const handleSave = () => {
-        updateMutation.mutate(editBook);
+        updateMutation.mutate(book);
         handleClear();
     }
 
     const handleClear = () => {
-        setEditBook({title: "", author: "", description: "", bookId: -1});
+        setBook({title: "", author: "", description: "", bookId: -1});
     }
 
     const handleDelete = () => {
-        if(editBook.bookId !== -1){
-            deleteMutation.mutate(editBook.bookId);
+        if(book.bookId !== -1){
+            deleteMutation.mutate(book.bookId);
             handleClear();
         } else {
             toast.error("Can't delete book that doesn't exists in system");
@@ -77,15 +71,15 @@ export const EditBook: FC<EditBookProps> = ({ book }): JSX.Element => {
     }
 
     const isDisabled = (saveNew: boolean) => {
-        if(editBook.title === "" || editBook.author === ""){
+        if(book.title === "" || book.author === ""){
             return true;
         }
 
-        if(!saveNew && editBook.bookId > -1){
+        if(!saveNew && book.bookId > -1){
             return false;
         }
 
-        if(saveNew && editBook.bookId === -1){
+        if(saveNew && book.bookId === -1){
             return false;
         }
         return true
@@ -93,13 +87,13 @@ export const EditBook: FC<EditBookProps> = ({ book }): JSX.Element => {
 
     const handleValueChange = (value: string, inputType: string) => {
         if(inputType === 'title'){ 
-            setEditBook({title: value, author: editBook.author, description: editBook.description, bookId: editBook.bookId});
+            setBook({title: value, author: book.author, description: book.description, bookId: book.bookId});
         }
         if(inputType === 'author'){ 
-            setEditBook({title: editBook.title, author: value, description: editBook.description, bookId: editBook.bookId});
+            setBook({title: book.title, author: value, description: book.description, bookId: book.bookId});
         }
         if(inputType === 'description'){ 
-            setEditBook({title: editBook.title, author: editBook.author, description: value, bookId: editBook.bookId});
+            setBook({title: book.title, author: book.author, description: value, bookId: book.bookId});
         }
     }
 
@@ -107,11 +101,11 @@ export const EditBook: FC<EditBookProps> = ({ book }): JSX.Element => {
         <EditContainer>
             <InputContainer>
                 <StyledInputHeader>Title</StyledInputHeader>
-                <StyledInput title="title" value={editBook.title} onChange={(e) => handleValueChange(e.target.value, 'title')} />
+                <StyledInput title="title" value={book.title} onChange={(e) => handleValueChange(e.target.value, 'title')} />
                 <StyledInputHeader>Author</StyledInputHeader>
-                <StyledInput title="author" value={editBook.author} onChange={(e) => handleValueChange(e.target.value, 'author')} />
+                <StyledInput title="author" value={book.author} onChange={(e) => handleValueChange(e.target.value, 'author')} />
                 <StyledInputHeader>Description</StyledInputHeader>
-                <StyledTextArea title="description" value={editBook.description} onChange={(e) => handleValueChange(e.target.value, 'description')} />
+                <StyledTextArea title="description" value={book.description} onChange={(e) => handleValueChange(e.target.value, 'description')} />
             </InputContainer>
             <ButtonContainer>
                 <SuccessButton title="savenew" onClick={handleSaveNew} disabled={isDisabled(true)}>Save new</SuccessButton>
